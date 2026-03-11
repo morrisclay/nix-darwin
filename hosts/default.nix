@@ -12,7 +12,17 @@
     uv
     zig
     bun
+    nodejs_22
     flox.packages.aarch64-darwin.default
+
+    # Modern CLI tools
+    jq
+    ripgrep
+    fd
+    fzf
+    bat
+    eza
+    delta
   ];
 
   # Homebrew for GUI apps and taps
@@ -21,12 +31,12 @@
     onActivation.cleanup = "zap";
     taps = [
       "charmbracelet/tap"
+      "cirruslabs/cli"
     ];
     brews = [
       "charmbracelet/tap/crush"
-      "node@22"
-      "nvm"
       "snowflake-cli"
+      "cirruslabs/cli/tart"
     ];
     casks = [
       "ghostty"
