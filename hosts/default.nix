@@ -1,4 +1,4 @@
-{ pkgs, flox, ... }: {
+{ pkgs, ... }: {
   nixpkgs.config.allowUnfree = true;
 
   # System packages (CLI tools)
@@ -13,8 +13,6 @@
     zig
     bun
     nodejs_22
-    flox.packages.aarch64-darwin.default
-
     # Modern CLI tools
     jq
     ripgrep

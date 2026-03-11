@@ -7,14 +7,12 @@
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    flox.url = "github:flox/flox/latest";
   };
 
-  outputs = { nixpkgs, nix-darwin, home-manager, flox, ... }:
+  outputs = { nixpkgs, nix-darwin, home-manager, ... }:
     let
       mkDarwin = { user, hostname }: nix-darwin.lib.darwinSystem {
         system = "aarch64-darwin";
-        specialArgs = { inherit flox; };
         modules = [
           ./hosts/default.nix
           home-manager.darwinModules.home-manager

@@ -1,4 +1,4 @@
-.PHONY: switch update check chopshop bootstrap auth clt test
+.PHONY: switch update check chopshop bootstrap auth clt flox test
 
 clt:
 	@if ! xcode-select -p &>/dev/null; then \
@@ -25,10 +25,16 @@ check:
 auth:
 	gh auth status || gh auth login
 
+flox:
+	@command -v flox &>/dev/null && echo "Flox already installed" || \
+		curl -fsSL https://downloads.flox.dev/by-env/stable/osx/flox-latest.pkg -o /tmp/flox.pkg && \
+		sudo installer -pkg /tmp/flox.pkg -target / && \
+		rm -f /tmp/flox.pkg
+
 chopshop:
 	curl -fsSL https://raw.githubusercontent.com/Lunar-VC/ChopShop/main/install.sh | bash
 
-bootstrap: clt switch auth chopshop
+bootstrap: clt switch auth flox chopshop
 
 test:
 	./scripts/test-bootstrap.sh
