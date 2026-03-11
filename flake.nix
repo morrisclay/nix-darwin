@@ -10,19 +10,33 @@
     flox.url = "github:flox/flox/latest";
   };
 
-  outputs = { nixpkgs, nix-darwin, home-manager, flox, ... }: {
-    darwinConfigurations."morris-mac" = nix-darwin.lib.darwinSystem {
-      system = "aarch64-darwin";
-      specialArgs = { inherit flox; };
-      modules = [
-        ./hosts/default.nix
-        home-manager.darwinModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.users.morris = import ./home/default.nix;
-        }
-      ];
+  outputs = { nixpkgs, nix-darwin, home-manager, flox, ... }:
+    let
+      mkDarwin = { user, hostname }: nix-darwin.lib.darwinSystem {
+        system = "aarch64-darwin";
+        specialArgs = { inherit flox; };
+        modules = [
+          ./hosts/default.nix
+          home-manager.darwinModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.${user} = import ./home/default.nix;
+          }
+          {
+            users.users.${user}.home = "/Users/${user}";
+          }
+        ];
+      };
+    in {
+      darwinConfigurations."morris-mac" = mkDarwin {
+        user = "morris";
+        hostname = "morris-mac";
+      };
+
+      darwinConfigurations."test" = mkDarwin {
+        user = "admin";
+        hostname = "test";
+      };
     };
-  };
 }

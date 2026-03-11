@@ -32,7 +32,7 @@ fi
 
 echo "==> VM running at $VM_IP"
 
-SSH="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 admin@$VM_IP"
+SSH="sshpass -p admin ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 admin@$VM_IP"
 
 echo "==> Waiting for SSH..."
 for i in $(seq 1 30); do
@@ -46,8 +46,8 @@ $SSH 'curl --proto "=https" --tlsv1.2 -sSf -L https://install.determinate.system
 echo "==> Cloning nix-darwin config..."
 $SSH ". /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh && git clone $REPO ~/.config/nix-darwin"
 
-echo "==> Running make switch..."
-$SSH ". /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh && cd ~/.config/nix-darwin && make switch"
+echo "==> Bootstrapping nix-darwin..."
+$SSH ". /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh && cd ~/.config/nix-darwin && sudo nix run nix-darwin -- switch --flake .#test"
 
 echo "==> Verifying installed packages..."
 $SSH ". /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh && which gh && which tmux && which claude && which eza && which gemini"
