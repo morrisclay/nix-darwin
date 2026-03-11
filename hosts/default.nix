@@ -26,7 +26,8 @@
   # Homebrew for GUI apps and taps
   homebrew = {
     enable = true;
-    onActivation.cleanup = "zap";
+    # Set to "zap" to remove unlisted packages, "none" to leave them alone
+    onActivation.cleanup = "none";
     taps = [
       "charmbracelet/tap"
       "cirruslabs/cli"
