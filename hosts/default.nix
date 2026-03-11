@@ -56,8 +56,6 @@
   # Nix settings
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  services.nix-daemon.enable = true;
-
   # Set system state version
   system.stateVersion = 6;
 }

@@ -5,8 +5,16 @@ VM_NAME="nix-darwin-test"
 BASE_IMAGE="sequoia-test"
 REPO="https://github.com/morrisclay/nix-darwin.git"
 
+cleanup() {
+  echo "==> Cleaning up..."
+  pkill -f "tart run $VM_NAME" 2>/dev/null || true
+  sleep 2
+  tart delete "$VM_NAME" 2>/dev/null || true
+}
+trap cleanup EXIT
+
 echo "==> Cleaning up any previous test VM..."
-tart delete "$VM_NAME" 2>/dev/null || true
+cleanup
 
 echo "==> Cloning base image..."
 tart clone "$BASE_IMAGE" "$VM_NAME"
@@ -54,8 +62,3 @@ $SSH ". /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh && which gh &&
 
 echo ""
 echo "==> Bootstrap test PASSED"
-
-echo "==> Cleaning up..."
-kill $VM_PID 2>/dev/null || true
-wait $VM_PID 2>/dev/null || true
-tart delete "$VM_NAME" 2>/dev/null || true
