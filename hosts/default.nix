@@ -53,8 +53,8 @@
     NSGlobalDomain.AppleShowAllExtensions = true;
   };
 
-  # Nix settings
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  # Let Determinate Nix manage the daemon; disable nix-darwin's nix management
+  nix.enable = false;
 
   # Set system state version
   system.stateVersion = 6;
